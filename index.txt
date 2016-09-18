@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>ASK HR</title>
+<script src="bootstrap.css"></script>
+    <script src="angular.min.js"></script>
+    <script src="angular.js"></script>
+</head>
+<body bgcolor="almond">
+<h2><center> ASK HR</center></h2>
+<form><center><b>
+<br>
+User ID :  </b><input type="text" name="user_id" />
+<br/>
+<br>
+<br>&nbsp&nbsp&nbsp&nbsp&nbsp <textarea rows="10" cols="50" name="description">
+Enter your reply here...
+
+</textarea>
+<p id="demo"></p>
+
+<script>
+document.getElementById("demo").innerHTML = Date();
+</script>
+<br><br><button type="button" class="btn btn-success"><b>POST</b></button><br/>
+</center></form>
+</body>
+</html>

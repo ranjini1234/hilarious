@@ -1,0 +1,111 @@
+package com;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Date;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+
+import org.hibernate.HibernateException;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
+import org.hibernate.cfg.Configuration;
+
+public class Dao {
+	private static SessionFactory factory;
+	public static void instantiate(){	
+	 
+	      try{
+	         factory = new Configuration().configure().buildSessionFactory();
+	      }catch (Throwable ex) { 
+	         System.err.println("Failed to create sessionFactory object." + ex);
+	         throw new ExceptionInInitializerError(ex); 
+	      }
+	     
+	}
+	   
+	   public Integer addEmployee(int empid,String query){
+		     System.out.println("Addition begins");
+		   	  Session session = factory.openSession();
+		      Transaction tx = null;
+		      Integer employeeID = null;
+		      try{
+		         tx = session.beginTransaction();
+		         Employee employee = new Employee(empid,query);
+		         employeeID = (Integer) session.save(employee); 
+		         tx.commit();
+		      }catch (HibernateException e) {
+		         if (tx!=null) tx.rollback();
+		         e.printStackTrace(); 
+		      }finally {
+		         session.close(); 
+		      }
+		      return employeeID;
+		   }
+		   /* Method to  READ all the employees */
+		   public void listEmployees( ){
+		      Session session = factory.openSession();
+		      Transaction tx = null;
+		      try{
+		         tx = session.beginTransaction();
+		         List employees = session.createQuery("FROM Employee").list(); 
+		         for (Iterator iterator = 
+		                           employees.iterator(); iterator.hasNext();){
+		            Employee employee = (Employee) iterator.next(); 
+		            System.out.print("EmpID: " + employee.getEmpid()); 
+		            System.out.print("  Query: " + employee.getQuery()); 
+		            
+		         }
+		         tx.commit();
+		      }catch (HibernateException e) {
+		         if (tx!=null) tx.rollback();
+		         e.printStackTrace(); 
+		      }finally {
+		         session.close(); 
+		      }
+		   }
+		   /* Method to UPDATE details of an employee */
+		   public void updateEmployee(int empid, String query){
+		      Session session = factory.openSession();
+		      Transaction tx = null;
+		      try{
+		         tx = session.beginTransaction();
+		         Employee employee = 
+		                    (Employee)session.get(Employee.class, empid); 
+		         employee.setQuery(query);
+		        
+		         session.update(employee); 
+		         tx.commit();
+		      }catch (HibernateException e) {
+		         if (tx!=null) tx.rollback();
+		         e.printStackTrace(); 
+		      }finally {
+		         session.close(); 
+		      }
+		   }
+		   /* Method to DELETE an employee from the records */
+		   public void deleteEmployee(int empid){
+		      Session session = factory.openSession();
+		      Transaction tx = null;
+		      try{
+		         tx = session.beginTransaction();
+		         Employee employee = 
+		                   (Employee)session.get(Employee.class, empid); 
+		         session.delete(employee); 
+		         tx.commit();
+		      }catch (HibernateException e) {
+		         if (tx!=null) tx.rollback();
+		         e.printStackTrace(); 
+		      }finally {
+		         session.close(); 
+		      }
+		      
+		   }
+		   
+		   public void displayEmployee(int empid){
+			   Session session = factory.openSession();
+			   Transaction tx = null;
+			   List query = session.createQuery("FROM Employee WHERE empid = "+Integer.toString(empid)).list();
+			   System.out.println(query.get(0));
+		   }
+}

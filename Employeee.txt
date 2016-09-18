@@ -1,0 +1,29 @@
+package com;
+
+public class Employee {
+	private int empid;
+	private String query;
+	
+	
+	public int getEmpid() {
+		return empid;
+	}
+	public void setEmpid(int empid) {
+		this.empid = empid;
+	}
+	public String getQuery() {
+		return query;
+	}
+	public void setQuery(String query) {
+		this.query = query;
+	}
+	public Employee(int empid2, String query2) 
+	{
+		empid2 = this.empid;
+		query2 = this.query;
+		
+		// TODO Auto-generated constructor stub
+	}
+	
+	
+}
